@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
     naviserver:
-        image: sussdorff/project-open
+        image: sussdorff/project-open:oacs-5-10
         volumes:
             - content:/var/www/openacs/content-repository-content-files
             - filestorage:/var/www/openacs/filestorage

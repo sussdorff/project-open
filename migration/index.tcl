@@ -56,5 +56,7 @@ parameter::set_from_package_key -package_key intranet-core -parameter "UtilCurre
 	}
     }
 
+# Missed upgrade script in ]project-open[
+# catch {db_source_sql_file "[acs_package_root_dir acs-kernel]/sql/postgresql/upgrade/upgrade-5.7.0d3-5.7.0d4.sql"}
 
 ad_return_warning "System migrated" "You have migrated to $server_url"
