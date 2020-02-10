@@ -1,4 +1,4 @@
-FROM sussdorff/project-open
+FROM sussdorff/project-open:oacs-5-10
 
 WORKDIR /var/www/openacs/packages
 ENV PKGS_LIST "intranet-rest intranet-hr intranet-core intranet-invoices intranet-filestorage \
