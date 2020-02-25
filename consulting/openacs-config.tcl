@@ -54,22 +54,18 @@ set proxy_mode		false
 # Which database do you want? PostgreSQL or Oracle?
 set database              postgres
 
-set db_name [exec cat exec cat /run/secrects/psql_db]
-
-if {$db_name eq ""} {
-    set db_name               $server
-}
+set db_name openacs
 
 if { $database eq "oracle" } {
     set db_password           "mysitepassword"
 } else {
     set db_host               postgres
     set db_port               ""
-    set db_user               [exec cat exec cat /run/secrects/psql_user]
+    set db_user               [exec cat /run/secrets/psql_user]
     if {$db_user eq ""} {
         set db_user $server
     }
-    set db_password           [exec cat exec cat /run/secrects/psql_password]
+    set db_password           [exec cat /run/secrets/psql_password]
     if {$db_password eq ""} {
         set db_password           testing
     }
