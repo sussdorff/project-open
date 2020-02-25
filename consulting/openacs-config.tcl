@@ -38,6 +38,8 @@ set address_v4		0.0.0.0    ;# listen on all IPv4 addresses
 # '-b address:port' which matches the address and port
 # as specified above.
 
+set server "openacs"
+
 set servername		"New OpenACS Installation - Development"
 
 set logroot		$serverroot/log/

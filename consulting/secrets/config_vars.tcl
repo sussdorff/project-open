@@ -1,4 +1,3 @@
-set server "openacs"
 set hostname "localhost"
 set httpport "8000"
 set system_owner malte.sussdorff@cognovis.de
