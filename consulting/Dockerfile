@@ -8,6 +8,7 @@ ENV PKGS_LIST "intranet-rest intranet-hr intranet-core intranet-invoices intrane
     intranet-timesheet2-workflow intranet-workflow"
 
 COPY config.tcl.postload /var/www/openacs/tcl/config.tcl.postload
+COPY openacs-config.tcl /usr/local/ns/conf/openacs-config.tcl
 
 RUN for pkg in ${PKGS_LIST} ; do echo $pkg \
     && rm -rf $pkg && wget -q https://gitlab.com/cognovis-5/$pkg/-/archive/master/$pkg.tar.gz \

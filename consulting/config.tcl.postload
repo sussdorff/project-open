@@ -1,16 +1,16 @@
 source /run/secrets/config_vars
 
-switch $port {
+switch $httpport {
 	80 {
-		set server_url "http://$server"
+		set server_url "http://$hostname"
 		set suppress_port 1
 	}
 	443 {
-		set server_url "https://$server"
+		set server_url "https://$hostname"
 		set suppress_port 1
 	}
 	default {
-		set server_url "http://${server}:$port"
+		set server_url "http://${hostname}:$httpport"
 		set suppress_port 0
 	}
 }
@@ -21,17 +21,17 @@ parameter::set_from_package_key -package_key intranet-core -parameter "UtilCurre
 parameter::set_from_package_key -package_key acs-kernel -parameter "SystemOwner" -value $system_owner
 parameter::set_from_package_key -package_key acs-tcl -parameter "SuppressHttpPort" -value $suppress_port
     
-parameter::set_from_package_key -package_key intranet-core -parameter "BackupBasePathUnix" -value "${server_path}/filestorage/backup"
-parameter::set_from_package_key -package_key intranet-filestorage -parameter "BugBasePathUnix" -value "${server_path}/filestorage/bugs"
-parameter::set_from_package_key -package_key intranet-filestorage -parameter "CompanyBasePathUnix" -value "${server_path}/filestorage/companies"
-parameter::set_from_package_key -package_key intranet-filestorage -parameter "HomeBasePathUnix" -value "${server_path}/filestorage/home"
-parameter::set_from_package_key -package_key intranet-filestorage -parameter "ProjectBasePathUnix" -value "${server_path}/filestorage/projects"
-parameter::set_from_package_key -package_key intranet-filestorage -parameter "ProjectSalesBasePathUnix" -value "${server_path}/filestorage/project_sales"
-parameter::set_from_package_key -package_key intranet-filestorage -parameter "TicketBasePathUnix" -value "${server_path}/filestorage/tickets"
-parameter::set_from_package_key -package_key intranet-filestorage -parameter "UserBasePathUnix" -value "${server_path}/filestorage/users"
-parameter::set_from_package_key -package_key intranet-filestorage -parameter "CostBasePathUnix" -value "${server_path}/filestorage/costs"
-parameter::set_from_package_key -package_key intranet-filestorage -parameter "EventBasePathUnix" -value "${server_path}/filestorage/events"
-parameter::set_from_package_key -package_key intranet-invoices -parameter "InvoiceTemplatePathUnix" -value "${server_path}/filestorage/templates"
+parameter::set_from_package_key -package_key intranet-core -parameter "BackupBasePathUnix" -value "${serverroot}/filestorage/backup"
+parameter::set_from_package_key -package_key intranet-filestorage -parameter "BugBasePathUnix" -value "${serverroot}/filestorage/bugs"
+parameter::set_from_package_key -package_key intranet-filestorage -parameter "CompanyBasePathUnix" -value "${serverroot}/filestorage/companies"
+parameter::set_from_package_key -package_key intranet-filestorage -parameter "HomeBasePathUnix" -value "${serverroot}/filestorage/home"
+parameter::set_from_package_key -package_key intranet-filestorage -parameter "ProjectBasePathUnix" -value "${serverroot}/filestorage/projects"
+parameter::set_from_package_key -package_key intranet-filestorage -parameter "ProjectSalesBasePathUnix" -value "${serverroot}/filestorage/project_sales"
+parameter::set_from_package_key -package_key intranet-filestorage -parameter "TicketBasePathUnix" -value "${serverroot}/filestorage/tickets"
+parameter::set_from_package_key -package_key intranet-filestorage -parameter "UserBasePathUnix" -value "${serverroot}/filestorage/users"
+parameter::set_from_package_key -package_key intranet-filestorage -parameter "CostBasePathUnix" -value "${serverroot}/filestorage/costs"
+parameter::set_from_package_key -package_key intranet-filestorage -parameter "EventBasePathUnix" -value "${serverroot}/filestorage/events"
+parameter::set_from_package_key -package_key intranet-invoices -parameter "InvoiceTemplatePathUnix" -value "${serverroot}/filestorage/templates"
 
 
 # Set parameters for redirecting mail
@@ -68,4 +68,4 @@ if {$smtp_domain ne "localhost"} {
 }
 
 # Remove the file so it wont run after the first start of the container
-file delete ${server_path}/tcl/config.tcl.postload
+file delete ${serverroot}/tcl/config.tcl.postload

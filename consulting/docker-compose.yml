@@ -12,18 +12,15 @@ services:
             - postgres
         ports: 
             - 8080:8000
-        environment:
-            - NS_DEBUG=false
-            - POSTGRES_PASSWORD=testing
-            - NS_verboseSQL=false
-            - NS_DEV=false
+        secrets:
+            - config_vars
 
     postgres:
         image: postgres:9
         environment: 
-            - POSTGRES_PASSWORD=testing
-            - POSTGRES_USER=openacs
-            - POSTGRES_DB=openacs
+            POSTGRES_PASSWORD_FILE: /run/secrets/psql_password
+            POSTGRES_USER_FILE: /run/secrets/psql_user
+            POSTGRES_DB: /run/secrects/psql_db
         ports: 
             - 5432:5432
         volumes:
@@ -39,4 +36,12 @@ volumes:
     filestorage:
     
         
-    
+secrets:
+    psql_user:
+        external: true
+    psql_password:
+        external: true
+    psql_db:
+        external: true
+    config_vars:
+        external: true

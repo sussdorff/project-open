@@ -1,6 +1,7 @@
-set server "localhost"
-set port "8000"
+set server "openacs"
+set hostname "localhost"
+set httpport "8000"
 set system_owner malte.sussdorff@cognovis.de
-set server_path /var/www/openacs
-set develop_p 1
-set staging_p 0
+set serverroot /var/www/$server
+set develop_p 0
+set staging_p 1
