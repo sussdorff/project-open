@@ -3,9 +3,9 @@
 
 set -e
 
-PGPASSWORD = $(cat "/run/secrects/psql_password")
-echo $PGPASSWORD
-until psql -h "postgres" -U "openacs" -c '\q'; do
+PGPASSWORD = $(cat "/run/secrets/psql_password")
+PGUSER = $(cat "/run/secrets/psql_user")
+until psql -h "postgres" -U $PGUSER -c '\q'; do
   >&2 echo "Postgres is unavailable - sleeping"
   sleep 1
 done

@@ -13,5 +13,4 @@ RUN for pkg in ${PKGS_LIST} ; do echo $pkg \
 
 COPY config.tcl.postload /var/www/openacs/tcl/config.tcl.postload
 COPY openacs-config.tcl /usr/local/ns/conf/openacs-config.tcl
-COPY wait-for-postgres.sh /var/www/openacs/wait-for-postgres.sh
-
+COPY wait-for-postgres.sh /usr/local/ns/bin/wait-for-postgres.sh
