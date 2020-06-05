@@ -1,0 +1,47 @@
+version: '3.1'
+
+services:
+    naviserver:
+        image: sussdorff/project-open:consulting
+        volumes:
+            - content:/var/www/openacs/content-repository-content-files
+            - filestorage:/var/www/openacs/filestorage
+            - ./migration:/var/www/openacs/www/migration
+            
+        depends_on: 
+            - postgres
+        ports: 
+            - 8080:8000
+        secrets:
+            - config_vars
+
+    postgres:
+        image: postgres:9
+        environment: 
+            POSTGRES_PASSWORD_FILE: /run/secrets/psql_password
+            POSTGRES_USER_FILE: /run/secrets/psql_user
+            POSTGRES_DB: /run/secrects/psql_db
+        ports: 
+            - 5432:5432
+        volumes:
+            - data:/var/lib/postgresql/data
+            - ./database:/docker-entrypoint-initdb.d
+
+    unoserver:
+        image: alphakevin/unoconv-server
+
+volumes:
+    data:
+    content:
+    filestorage:
+    
+        
+secrets:
+    psql_user:
+        external: true
+    psql_password:
+        external: true
+    psql_db:
+        external: true
+    config_vars:
+        external: true

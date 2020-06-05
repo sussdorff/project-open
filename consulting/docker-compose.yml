@@ -12,15 +12,21 @@ services:
             - postgres
         ports: 
             - 8080:8000
+
         secrets:
+            - psql_password
+            - psql_user
             - config_vars
 
     postgres:
         image: postgres:9
+        secrets:
+            - psql_password
+            - psql_user
         environment: 
             POSTGRES_PASSWORD_FILE: /run/secrets/psql_password
             POSTGRES_USER_FILE: /run/secrets/psql_user
-            POSTGRES_DB: /run/secrects/psql_db
+            POSTGRES_DB: openacs
         ports: 
             - 5432:5432
         volumes:
@@ -38,10 +44,8 @@ volumes:
         
 secrets:
     psql_user:
-        external: true
+        file: ./psql_user.txt
     psql_password:
-        external: true
-    psql_db:
-        external: true
+        file: ./psql_password.txt    
     config_vars:
-        external: true
+        file: ./config_vars.tcl
