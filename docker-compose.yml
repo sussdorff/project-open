@@ -11,7 +11,7 @@ services:
         depends_on: 
             - postgres
         ports: 
-            - 8080:8000
+            - 8081:8000
         environment:
             - NS_DEBUG=false
             - POSTGRES_PASSWORD=testing
