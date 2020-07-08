@@ -11,4 +11,7 @@ RUN wget --quiet https://sourceforge.net/projects/project-open/files/project-ope
     && mv -n packages/* /var/www/openacs/packages/ && rm -rf /var/www/projop \
     && chown -R nsadmin.nsadmin /var/www/openacs
 
+COPY intranet-search-pg/intranet-search-pg-procs.tcl /var/www/openacs/packages/intranet-search-pg/tcl/intranet-search-pg-procs.tcl
+COPY intranet-search-pg/search.tcl /var/www/openacs/packages/intranet-search-pg/www/search.tcl
+
 WORKDIR /var/www/openacs
