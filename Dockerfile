@@ -11,12 +11,12 @@ RUN wget --quiet https://openacs.org/projects/openacs/download/download/openacs-
     && tar xfz openacs-5.9.1-full.tar.gz
 
 RUN mv openacs-5.9.1/packages/file-storage /var/www/openacs/packages/file-storage \
-    && mv openacs-5.9.1/packages/acs-events /var/www/openacs/packages/acs-events \
     && mv openacs-5.9.1/packages/attachments /var/www/openacs/packages/attachments \
     && mv openacs-5.9.1/packages/ajaxhelper /var/www/openacs/packages/ajaxhelper \
     && mv openacs-5.9.1/packages/calendar /var/www/openacs/packages/calendar \
     && mv openacs-5.9.1/packages/categories /var/www/openacs/packages/categories \
-    && mv openacs-5.9.1/packages/general-comments /var/www/openacs/packages/general-comments
+    && mv openacs-5.9.1/packages/general-comments /var/www/openacs/packages/general-comments \
+    && mv openacs-5.9.1/packages/acs-datetime /var/www/openacs/packages/acs-datetime
 
 
 RUN wget https://sourceforge.net/projects/project-open/files/project-open/V5.0/update/project-open-Update-5.0.3.0.0.tgz \
