@@ -4,3 +4,6 @@ set system_owner malte.sussdorff@cognovis.de
 set serverroot /var/www/openacs
 set develop_p 0
 set staging_p 0
+set proxy_mode "false"
+set max_file_upload_mb        50
+set max_file_upload_min        5
