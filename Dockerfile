@@ -30,6 +30,7 @@ RUN for pkg in ${PROJOP_LIST} ; do git clone https://gitlab.project-open.net/pro
 
 RUN cp -pr installer-linux/bin /var/www/openacs 
 RUN cp -pr installer-linux/content-repository-content-files /var/www/openacs 
+RUN rm -rf installer-linux
 
 WORKDIR /var/www/openacs
 
