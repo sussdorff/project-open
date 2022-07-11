@@ -7,7 +7,7 @@ RUN mkdir /var/www/openacs/filestorage
 WORKDIR /var/www/openacs/packages
 
 # Packages to overwrite
-ENV PKGS_LIST "cognovis-core cognovis-rest intranet-invoices intranet-openoffice intranet-material intranet-mail intranet-chilkat intranet-fs intranet-slack intranet-collmex"
+ENV PKGS_LIST "cognovis-core cognovis-rest intranet-invoices intranet-openoffice intranet-material intranet-mail intranet-chilkat intranet-fs intranet-slack intranet-collmex webix-portal"
 RUN for pkg in ${PKGS_LIST} ; do git clone https://gitlab.com/cognovis-5/${pkg}.git ; done
 
 ENV OLD_PKGS_LIST "intranet-jquery"
