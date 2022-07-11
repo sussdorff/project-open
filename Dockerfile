@@ -1,42 +1,37 @@
-FROM sussdorff/openacs
+FROM sussdorff/openacs:5.10
 
-RUN  apt-get update && apt-get -y dist-upgrade && apt-get -y autoremove
+RUN  apt-get update && apt-get -y dist-upgrade && apt-get install perl -y && apt-get -y autoremove
 
-RUN mkdir -p /var/www/projop && mkdir /var/www/openacs/filestorage
+RUN mkdir /var/www/openacs/filestorage
 
-WORKDIR /var/www/projop
+WORKDIR /var/www/openacs/packages
 
-# Get initial OpenACS modules
-RUN wget --quiet https://openacs.org/projects/openacs/download/download/openacs-5.9.1-full.tar.gz \
-    && tar xfz openacs-5.9.1-full.tar.gz
+# Packages to overwrite
+ENV PKGS_LIST "cognovis-core cognovis-rest intranet-invoices intranet-openoffice intranet-material intranet-mail intranet-chilkat intranet-fs intranet-slack intranet-collmex"
+RUN for pkg in ${PKGS_LIST} ; do git clone https://gitlab.com/cognovis-5/${pkg}.git ; done
 
-RUN mv openacs-5.9.1/packages/file-storage /var/www/openacs/packages/file-storage \
-    && mv openacs-5.9.1/packages/attachments /var/www/openacs/packages/attachments \
-    && mv openacs-5.9.1/packages/ajaxhelper /var/www/openacs/packages/ajaxhelper \
-    && mv openacs-5.9.1/packages/calendar /var/www/openacs/packages/calendar \
-    && mv openacs-5.9.1/packages/categories /var/www/openacs/packages/categories \
-    && mv openacs-5.9.1/packages/general-comments /var/www/openacs/packages/general-comments \
-    && mv openacs-5.9.1/packages/acs-datetime /var/www/openacs/packages/acs-datetime
+ENV OLD_PKGS_LIST "intranet-jquery"
+RUN for pkg in ${OLD_PKGS_LIST} ; do git clone https://gitlab.com/cognovis/${pkg}.git ; done
+
+ENV PO_PKGS_LIST "intranet-cost-center upgrade-5.0-5.3 intranet-ganttproject"
+RUN for pkg in ${PO_PKGS_LIST} ; do git clone https://gitlab.com/project-open/${pkg}.git ; done
+
+ENV OPENACS_LIST "acs-events rss-support oacs-dav  file-storage attachments calendar categories general-comments acs-datetime views"
+RUN for pkg in ${OPENACS_LIST} ; do git clone -b oacs-5-10 https://github.com/openacs/${pkg}.git ; done
 
 
-RUN wget https://sourceforge.net/projects/project-open/files/project-open/V5.0/update/project-open-Update-5.0.3.0.0.tgz \
-    && tar xzf project-open-Update-5.0.3.0.0.tgz && rm project-open-Update-5.0.3.0.0.tgz \
-    && wget https://downloads.sourceforge.net/project/project-open/project-open/Support%20Files/web_projop-aux-files.5.0.0.0.0.tgz \
-    && tar xzf web_projop-aux-files.5.0.0.0.0.tgz && rm web_projop-aux-files.5.0.0.0.0.tgz \
-    && mv -n packages/* /var/www/openacs/packages/ && rm -rf /var/www/projop \
-    && chown -R nsadmin.nsadmin /var/www/openacs
+ENV PROJOP_LIST "acs-mail acs-workflow diagram workflow simple-survey installer-linux intranet-calendar intranet-core intranet-cost intranet-dw-light intranet-milestone intranet-dynfield intranet-expenses intranet-exchange-rate intranet-filestorage intranet-forum\
+ intranet-helpdesk intranet-hr intranet-notes intranet-payments intranet-reporting intranet-reporting-dashboard intranet-reporting-tutorial \
+ intranet-rest intranet-search-pg intranet-security-update-client intranet-simple-survey intranet-sysconfig intranet-timesheet2 intranet-timesheet2-invoices \
+ intranet-timesheet2-tasks intranet-timesheet2-workflow intranet-workflow ref-currency intranet-confdb"
+RUN for pkg in ${PROJOP_LIST} ; do git clone https://gitlab.project-open.net/project-open/${pkg}.git ; done
 
-COPY upgrade/intranet-core /var/www/openacs/packages/intranet-core/sql/postgresql/upgrade
-COPY upgrade/intranet-dynfield /var/www/openacs/packages/intranet-dynfield/sql/postgresql/upgrade
-COPY upgrade/intranet-material /var/www/openacs/packages/intranet-material/sql/postgresql/upgrade
-COPY upgrade/intranet-reporting /var/www/openacs/packages/intranet-reporting/sql/postgresql/upgrade
-COPY upgrade/intranet-timesheet2 /var/www/openacs/packages/intranet-timesheet2/sql/postgresql/upgrade
-COPY upgrade/intranet-timesheet2-workflow /var/www/openacs/packages/intranet-timesheet2-workflow/sql/postgresql/upgrade
-COPY upgrade/intranet-cost /var/www/openacs/packages/intranet-cost/sql/postgresql/upgrade
-COPY upgrade/intranet-forum /var/www/openacs/packages/intranet-forum/sql/postgresql/upgrade
-COPY upgrade/intranet-planning /var/www/openacs/packages/intranet-planning/sql/postgresql/upgrade
-COPY upgrade/intranet-rest /var/www/openacs/packages/intranet-rest/sql/postgresql/upgrade
-COPY upgrade/intranet-timesheet2-tasks /var/www/openacs/packages/intranet-timesheet2-tasks/sql/postgresql/upgrade
-COPY upgrade/intranet-workflow /var/www/openacs/packages/intranet-workflow/sql/postgresql/upgrade
+
+
+RUN cp -pr installer-linux/bin /var/www/openacs 
+RUN cp -pr installer-linux/content-repository-content-files /var/www/openacs 
 
 WORKDIR /var/www/openacs
+
+ENV PKGS_LIST "webix-portal sencha-portal sencha-assignment sencha-freelance-translation intranet-sencha-tables intranet-trans-invoices intranet-translation intranet-trans-trados intranet-trans-memoq"
+ENV PKGS_OLD_LIST "intranet-trans-project-wizard intranet-trans-termbase intranet-freelance intranet-freelance-translation intranet-freelance-invoices"
