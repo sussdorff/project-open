@@ -2,7 +2,7 @@
 SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-5.0.2.4.3-5.0.2.4.4.sql','');
 
 
--- insert into country_codes (iso, country_name) values ('la', 'Sri Lanka');
+-- insert into country_codes (iso, country_name) values ('lk', 'Sri Lanka');
 
 update country_codes 
 set country_name = 'Taiwan (ROC)' 

@@ -2,7 +2,7 @@
 
 SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-4.0.3.3.0-4.0.3.3.1.sql','');
 
-
+update im_dynfield_attributes set also_hard_coded_p = 'f' where acs_attribute_id in (select attribute_id from acs_attributes where object_type = 'im_project');
 
 -- Delete the source_language_id DynField
 create or replace function inline_0 ()
@@ -13,7 +13,7 @@ declare
 begin
 	select count(*) into v_column_exists_p from user_tab_columns
 	where lower(table_name) = 'im_projects' and lower(column_name) = 'source_language_id';
-	IF v_column_exists_p = 0 THEN
+	IF v_column_exists_p != 0 THEN
 
 		select	attribute_id into dynfield_id
 		from	im_dynfield_attributes

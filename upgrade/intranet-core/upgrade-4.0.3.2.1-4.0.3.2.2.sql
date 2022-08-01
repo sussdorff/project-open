@@ -3,7 +3,7 @@
 SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-4.0.3.2.1-4.0.3.2.2.sql','');
 
 CREATE OR REPLACE FUNCTION im_project_change_company_id_of_childs(integer)
-returns integer as $body$
+returns integer as '
 
 declare
         v_project_id            alias for $1;
@@ -29,14 +29,16 @@ begin
                 where project_id = r.project_id;
         END LOOP;
         return 0;
-end;$body$ language 'plpgsql' VOLATILE;
+end;' language 'plpgsql' VOLATILE;
 
 
 CREATE OR REPLACE FUNCTION im_project_change_company_id_of_childs_all()
-returns integer as $body$
+returns integer as '
+
 declare
         r                       record;
 begin
+
         -- Set company_id of all childs of root node to company_id of root node
         FOR r IN
 
@@ -58,4 +60,4 @@ begin
                 perform im_project_change_company_id_of_childs(r.project_id);
         END LOOP;
         return 0;
-end;$body$ language 'plpgsql' VOLATILE;
+end;' language 'plpgsql' VOLATILE;

@@ -51,9 +51,9 @@ LANGUAGE 'plpgsql';
 -- gets % of hours logged for user/project on particular day based on hours spend the month
 -- 
 
-drop function if exists im_get_hours_percentage(int4, int4, varchar);
-CREATE OR REPLACE FUNCTION im_get_hours_percentage(int4, int4, varchar)
-RETURNS "numeric" AS '
+drop function im_get_hours_percentage(int4, int4, "varchar");
+CREATE OR REPLACE FUNCTION im_get_hours_percentage(int4, int4, "varchar")
+  RETURNS "numeric" AS '
     declare
         v_user_id	ALIAS FOR $1;
         v_project_id    ALIAS FOR $2;

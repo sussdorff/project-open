@@ -3,7 +3,7 @@
 SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-4.0.2.0.3-4.0.2.0.4.sql','');
 
 CREATE OR REPLACE FUNCTION im_category_find_next_free_id_in_sequence(INTEGER, INTEGER)
-RETURNS INTEGER AS $body$
+  RETURNS INTEGER AS '
 declare
         p_start_seq_id          alias for $1;
         p_stop_seq_id        	alias for $2;
@@ -26,4 +26,4 @@ begin
 		IF v_category_id = 0 THEN return i; END IF; 
 	END LOOP; 
  
-end;$body$ LANGUAGE 'plpgsql' VOLATILE;
+end;' LANGUAGE 'plpgsql' VOLATILE;

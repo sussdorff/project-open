@@ -785,24 +785,6 @@ select im_menu__new (
 
 
 
-select im_menu__new (
-	null,				-- p_menu_id
-	'im_menu',			-- object_type
-	now(),				-- creation_date
-	null,				-- creation_user
-	null,				-- creation_ip
-	null,				-- context_id
-	'intranet-core',		-- package_name
-	'admin_nsstats',		-- label
-	'NaviServer Stats',		-- name
-	'/intranet/admin/nsstats',	-- url
-	1850,				-- sort_order
-	(select menu_id from im_menus where label = 'admin'),
-	null				-- p_visible_tcl
-);
-
-
-
 
 update im_menus
 set parent_menu_id = (select menu_id from im_menus where label = 'object_type_admin')
@@ -1016,9 +998,6 @@ update im_menus set parent_menu_id = (select menu_id from im_menus where label =
 update im_menus set sort_order = 1600					where label = 'openacs_auth';
 update im_menus set sort_order = 1700					where label = 'openacs_l10n';
 update im_menus set sort_order = 1800					where label = 'admin_menus';
-
-update im_menus set sort_order = 1850					where label = 'admin_nsstats';
-
 update im_menus set sort_order = 1900					where label = 'object_type_admin';
 update im_menus set sort_order = 2000					where label = 'admin_packages';
 update im_menus set sort_order = 2100					where label = 'admin_parameters';

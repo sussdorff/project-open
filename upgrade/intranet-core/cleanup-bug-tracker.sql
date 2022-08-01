@@ -69,8 +69,8 @@ select  t.*,
         p.project_name as task_name,
         p.project_nr as task_nr,
         p.percent_completed,
-        p.project_type_id as task_type_id,
-        p.project_status_id as task_status_id,
+        p.project_type_id,
+        p.project_status_id,
         p.start_date,
         p.end_date,
         p.reported_hours_cache,
@@ -90,6 +90,7 @@ update im_projects set project_type_id = 85 where project_type_id in (4300, 4305
 update im_invoice_items set item_type_id = 85 where item_type_id in (4300, 4305);
 delete from im_category_hierarchy where parent_id in (4300, 4305) or child_id in (4300, 4305);
 delete from im_dynfield_type_attribute_map where object_type_id in (4300, 4305);
+delete from im_freelance_skill_type_map where object_type_id in (4300,4305);
 delete from im_categories where category_id in (4300, 4305);
 
 

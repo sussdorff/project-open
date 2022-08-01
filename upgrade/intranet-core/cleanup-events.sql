@@ -537,7 +537,7 @@ $$ LANGUAGE plpgsql;
 -- 
 -- @author Dave Bauer (dave@thedesignexperience.org)
 -- @creation-date 2007-09-27
--- @cvs-id $Id: upgrade-0.6d2-0.6d3.sql,v 1.3 2015/12/04 13:50:03 cvs Exp $
+-- @cvs-id $Id: cleanup-events.sql,v 1.1 2016/01/11 12:05:56 cvs Exp $
 --
 -- Fix Daylight Saving Time bug when creating recurring events
 
@@ -815,7 +815,7 @@ $$ LANGUAGE plpgsql;
 -- 
 -- @author Victor Guerra (vguerra@gmail.com)
 -- @creation-date 2010-11-05
--- @cvs-id $Id: upgrade-0.6d3-0.6d4.sql,v 1.2 2015/12/04 13:50:04 cvs Exp $
+-- @cvs-id $Id: cleanup-events.sql,v 1.1 2016/01/11 12:05:56 cvs Exp $
 --
 
 -- PG 9.x support - changes regarding usage of sequences

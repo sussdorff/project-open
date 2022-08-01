@@ -1,47 +1,24 @@
--- upgrade-4.1.0.0.1-4.1.0.0.2.sql
-
 SELECT acs_log__debug('/packages/intranet-reporting/sql/postgresql/upgrade/upgrade-4.1.0.0.1-4.1.0.0.2.sql','');
 
-
----------------------------------------------------------
--- Budget Check for Main Project
---
-
 create or replace function inline_0 ()
-returns integer as $body$
-declare
-	v_menu			integer;
-	v_main_menu 		integer;
-	v_accounting		integer;
-	v_senman		integer;
-BEGIN
-	select group_id into v_senman from groups where group_name = 'Senior Managers';
-	select group_id into v_accounting from groups where group_name = 'Accounting';
+returns integer as $$
+begin
 
-	select menu_id into v_main_menu	from im_menus
-	where label = 'reporting-timesheet';
+    perform im_category_new('15200','Daily','Timesheet - Timescale');
+    perform im_category_new('15210','Weekly','Timesheet - Timescale');
+    perform im_category_new('15220','Monthly','Timesheet - Timescale');
 
-	v_menu := im_menu__new (
-		null,						-- p_menu_id
-		'im_menu',					-- object_type
-		now(),						-- creation_date
-		null,						-- creation_user
-		null,						-- creation_ip
-		null,						-- context_id
-		'intranet-reporting',				-- package_name
-		'timesheet-days-per-project-and-month',	-- label
-		'Timesheet Days per Month',			-- name
-		'/intranet-reporting/timesheet-days-per-project-and-month?',	-- url
-		190,						-- sort_order
-		v_main_menu,					-- parent_menu_id
-		null						-- p_visible_tcl
-	);
 
-	PERFORM acs_permission__grant_permission(v_menu, v_senman, 'read');
-	PERFORM acs_permission__grant_permission(v_menu, v_accounting, 'read');
+    perform im_category_new('15300','Single','Timesheet - Detail Level');
+    perform im_category_new('15310','Subprojects','Timesheet - Detail Level');
+    perform im_category_new('15320','Detailed','Timesheet - Detail Level');
 
-	return 0;
-end;$body$ language 'plpgsql';
+    update im_categories set visible_tcl='[im_user_is_md_coo_p [ad_conn user_id]]' where category_id in (15200,15210,15220,15300,15310,15320);
+
+    return 0;
+end;
+$$ language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
+
 

@@ -6,9 +6,8 @@ SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-4.
 ------------------------------------------------
 -- Copy of upgrade-3.0.0.0.first.sql
 
-drop function if exists acs_privilege__create_privilege (varchar,varchar,varchar);
 create or replace function acs_privilege__create_privilege (varchar,varchar,varchar)
-returns integer as $body$
+returns integer as '
 declare
 	create_privilege__privilege             alias for $1;  
 	create_privilege__pretty_name           alias for $2;  -- default null  
@@ -28,13 +27,12 @@ begin
 	);
 
     return 0; 
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
 
 
 
-drop function if exists acs_privilege__add_child (varchar,varchar);
 create or replace function acs_privilege__add_child (varchar,varchar)
-returns integer as $body$
+returns integer as '
 declare
 	add_child__privilege            alias for $1;  
 	add_child__child_privilege      alias for $2;  
@@ -51,7 +49,7 @@ begin
 	);
 
     return 0; 
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
 
 
 
@@ -59,13 +57,11 @@ end;$body$ language 'plpgsql';
 -- im_menus
 -----------------------------------------------------------------------
 
-create or replace function im_menu__new (
-	integer, varchar, timestamptz, integer, varchar, integer,
-	varchar, varchar, varchar, varchar, integer, integer, varchar
-) returns integer as $body$
+create or replace function im_menu__new (integer, varchar, timestamptz, integer, varchar, integer,
+varchar, varchar, varchar, varchar, integer, integer, varchar) returns integer as '
 declare
 	p_menu_id	  alias for $1;   -- default null
-        p_object_type	  alias for $2;   -- default 'im_menu'
+        p_object_type	  alias for $2;   -- default ''acs_object''
         p_creation_date	  alias for $3;   -- default now()
         p_creation_user	  alias for $4;   -- default null
         p_creation_ip	  alias for $5;   -- default null
@@ -100,11 +96,11 @@ begin
 		p_sort_order, p_parent_menu_id, p_visible_tcl
 	);
 	return v_menu_id;
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
 
 
 create or replace function im_new_menu (varchar, varchar, varchar, varchar, integer, varchar, varchar) 
-returns integer as $body$
+returns integer as '
 declare
 	p_package_name		alias for $1;
 	p_label			alias for $2;
@@ -128,7 +124,7 @@ begin
 
 	v_menu_id := im_menu__new (
 		null,					-- p_menu_id
-		'im_menu',				-- object_type
+		''im_menu'',				-- object_type
 		now(),					-- creation_date
 		null,					-- creation_user
 		null,					-- creation_ip
@@ -143,10 +139,10 @@ begin
 	);
 
 	return v_menu_id;
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
 
 create or replace function im_new_menu_perms (varchar, varchar)
-returns integer as $body$
+returns integer as '
 declare
 	p_label		alias for $1;
 	p_group		alias for $2;
@@ -159,9 +155,9 @@ begin
 	select	group_id into v_group_id
 	from	groups where lower(group_name) = lower(p_group);
 
-	PERFORM acs_permission__grant_permission(v_menu_id, v_group_id, 'read');
+	PERFORM acs_permission__grant_permission(v_menu_id, v_group_id, ''read'');
 	return v_menu_id;
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
 
 
 
@@ -173,18 +169,18 @@ end;$body$ language 'plpgsql';
 -- Add a "title_tcl" field to Components
 --
 create or replace function inline_0 ()
-returns integer as $body$
+returns integer as '
 declare
 	v_count	 integer;
 begin
 	select count(*) into v_count from user_tab_columns
-	where table_name = 'IM_COMPONENT_PLUGINS' and column_name = 'TITLE_TCL';
+	where table_name = ''IM_COMPONENT_PLUGINS'' and column_name = ''TITLE_TCL'';
 	if v_count > 0 then return 0; end if;
 
 	alter table im_component_plugins add title_tcl text;
 
 	return 0;
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
 select inline_0 ();
 drop function inline_0 ();
 
@@ -193,10 +189,10 @@ create or replace function im_component_plugin__new (
 	integer, varchar, timestamptz, integer, varchar, integer, 
 	varchar, varchar, varchar, varchar, varchar, integer, 
 	varchar, varchar
-) returns integer as $body$
+) returns integer as '
 declare
 	p_plugin_id	alias for $1;	-- default null
-	p_object_type	alias for $2;	-- default 'im_component_plugin'
+	p_object_type	alias for $2;	-- default ''acs_object''
 	p_creation_date	alias for $3;	-- default now()
 	p_creation_user	alias for $4;	-- default null
 	p_creation_ip	alias for $5;	-- default null
@@ -237,16 +233,16 @@ begin
 	);
 
 	return v_plugin_id;
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
 
 
 create or replace function im_component_plugin__new (
 	integer, varchar, timestamptz, integer, varchar, integer, 
 	varchar, varchar, varchar, varchar, varchar, integer, varchar
-) returns integer as $body$
+) returns integer as '
 declare
 	p_plugin_id	alias for $1;	-- default null
-	p_object_type	alias for $2;	-- default 'im_component_plugin'
+	p_object_type	alias for $2;	-- default ''acs_object''
 	p_creation_date	alias for $3;	-- default now()
 	p_creation_user	alias for $4;	-- default null
 	p_creation_ip	alias for $5;	-- default null
@@ -269,12 +265,12 @@ begin
 		p_component_tcl, null
 	);
 	return v_plugin_id;
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
 
 
 CREATE OR REPLACE FUNCTION im_category_new (
 	integer, varchar, varchar, varchar
-) RETURNS integer as $body$
+) RETURNS integer as '
 DECLARE
 	p_category_id		alias for $1;
 	p_category		alias for $2;
@@ -292,23 +288,23 @@ BEGIN
 	values (p_category_id, p_category, p_category_type, p_description);
 
 	RETURN 0;
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
 
 CREATE OR REPLACE FUNCTION im_category_new (
 	integer, varchar, varchar
-) RETURNS integer as $body$
+) RETURNS integer as '
 DECLARE
 	p_category_id		alias for $1;
 	p_category		alias for $2;
 	p_category_type		alias for $3;
 BEGIN
 	RETURN im_category_new(p_category_id, p_category, p_category_type, NULL);
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
 
 
 CREATE OR REPLACE FUNCTION im_category_hierarchy_new (
 	varchar, varchar, varchar
-) RETURNS integer as $body$
+) RETURNS integer as '
 DECLARE
 	p_child			alias for $1;
 	p_parent		alias for $2;
@@ -320,11 +316,11 @@ DECLARE
 BEGIN
 	select	category_id into v_child_id from im_categories
 	where	category = p_child and category_type = p_cat_type;
-	IF v_child_id is null THEN RAISE NOTICE 'im_category_hierarchy_new: bad category 1: "%" ',p_child; END IF;
+	IF v_child_id is null THEN RAISE NOTICE ''im_category_hierarchy_new: bad category 1: "%" '',p_child; END IF;
 
 	select	category_id into v_parent_id from im_categories
 	where	category = p_parent and category_type = p_cat_type;
-	IF v_parent_id is null THEN RAISE NOTICE 'im_category_hierarchy_new: bad category 2: "%" ',p_parent; END IF;
+	IF v_parent_id is null THEN RAISE NOTICE ''im_category_hierarchy_new: bad category 2: "%" '',p_parent; END IF;
 
 	select	count(*) into v_count from im_category_hierarchy
 	where	child_id = v_child_id and parent_id = v_parent_id;
@@ -334,13 +330,13 @@ BEGIN
 	values (v_child_id, v_parent_id);
 
 	RETURN 0;
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
 
 
 
 CREATE OR REPLACE FUNCTION im_category_hierarchy_new (
 	integer, integer
-) RETURNS integer as $body$
+) RETURNS integer as '
 DECLARE
 	p_child_id		alias for $1;
 	p_parent_id		alias for $2;
@@ -349,12 +345,12 @@ DECLARE
 	v_count			integer;
 BEGIN
 	IF p_child_id is null THEN 
-		RAISE NOTICE 'im_category_hierarchy_new: bad category 1: "%" ',p_child_id;
+		RAISE NOTICE ''im_category_hierarchy_new: bad category 1: "%" '',p_child_id;
 		return 0;
 	END IF;
 
 	IF p_parent_id is null THEN 
-		RAISE NOTICE 'im_category_hierarchy_new: bad category 2: "%" ',p_parent_id; 
+		RAISE NOTICE ''im_category_hierarchy_new: bad category 2: "%" '',p_parent_id; 
 		return 0;
 	END IF;
 	IF p_child_id = p_parent_id THEN return 0; END IF;
@@ -376,7 +372,7 @@ BEGIN
 	END LOOP;
 
 	RETURN 0;
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
 
 
 -----------------------------------------------------------------------
@@ -384,18 +380,19 @@ end;$body$ language 'plpgsql';
 -----------------------------------------------------------------------
 
 -- Duplicate tollerant version of create_type
-drop function if exists acs_object_type__create_type (varchar, varchar, varchar, varchar, varchar, varchar, varchar, boolean, varchar, varchar);
-create or replace function acs_object_type__create_type (varchar, varchar, varchar, varchar, varchar, varchar, varchar, boolean, varchar, varchar) 
-returns integer as $body$
+create or replace function acs_object_type__create_type (
+	varchar, varchar, varchar, varchar, varchar,
+	varchar, varchar, boolean, varchar, varchar
+) returns integer as '
 declare
 	create_type__object_type		alias for $1;	
 	create_type__pretty_name		alias for $2;	
 	create_type__pretty_plural		alias for $3;	
 	create_type__supertype			alias for $4;	
 	create_type__table_name			alias for $5;	
-	create_type__id_column			alias for $6;
+	create_type__id_column			alias for $6;	-- default ''XXX''
 	create_type__package_name		alias for $7;	-- default null
-	create_type__abstract_p			alias for $8;	-- default 'f'
+	create_type__abstract_p			alias for $8;	-- default ''f''
 	create_type__type_extension_table	alias for $9;	-- default null
 	create_type__name_method		alias for $10;	-- default null
 	v_package_name				acs_object_types.package_name%TYPE;
@@ -408,20 +405,20 @@ begin
 	where object_type = create_type__object_type;
 	if v_count > 0 then return 0; end if;
 
-	v_idx := position('.' in create_type__name_method);
+	v_idx := position(''.'' in create_type__name_method);
 	if v_idx <> 0 then
 		 v_name_method := substr(create_type__name_method,1,v_idx - 1) || 
-			 '__' || substr(create_type__name_method, v_idx + 1);
+			 ''__'' || substr(create_type__name_method, v_idx + 1);
 	else 	 v_name_method := create_type__name_method;
 	end if;
 
-	if create_type__package_name is null or create_type__package_name = '' then
+	if create_type__package_name is null or create_type__package_name = '''' then
 		v_package_name := create_type__object_type;
 	else	v_package_name := create_type__package_name;
 	end if;
 
-	if create_type__supertype is null or create_type__supertype = '' then
-		v_supertype := 'acs_object';
+	if create_type__supertype is null or create_type__supertype = '''' then
+		v_supertype := ''acs_object'';
 	else	v_supertype := create_type__supertype;
 	end if;
 
@@ -438,7 +435,7 @@ begin
 	);
 
 	return 0; 
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
 
 
 
@@ -449,10 +446,10 @@ end;$body$ language 'plpgsql';
 create or replace function im_report__new (
 	integer, varchar, timestamptz, integer, varchar, integer,
 	varchar, varchar, integer, integer, integer, text
-) returns integer as $body$
+) returns integer as '
 DECLARE
 	p_report_id		alias for $1;		-- report_id  default null
-	p_object_type   	alias for $2;		-- object_type default 'im_report'
+	p_object_type   	alias for $2;		-- object_type default ''im_report''
 	p_creation_date 	alias for $3;		-- creation_date default now()
 	p_creation_user 	alias for $4;		-- creation_user default null
 	p_creation_ip   	alias for $5;		-- creation_ip default null
@@ -479,7 +476,7 @@ BEGIN
 		p_creation_user,	-- creation_user
 		p_creation_ip,		-- creation_ip
 		p_context_id,		-- context_id
-		't'			-- security_inherit_p
+		''t''			-- security_inherit_p
 	);
 
 	insert into im_reports (
@@ -493,7 +490,7 @@ BEGIN
 	);
 
 	return v_report_id;
-END;$body$ language 'plpgsql';
+END;' language 'plpgsql';
 
 
 
@@ -506,7 +503,7 @@ create or replace function im_dynfield_widget__new (
 	integer, varchar, timestamptz, integer, varchar, integer,
 	varchar, varchar, varchar, integer, varchar, varchar, 
 	varchar, varchar
-) returns integer as $body$
+) returns integer as '
 DECLARE
 	p_widget_id		alias for $1;
 	p_object_type		alias for $2;
@@ -547,7 +544,7 @@ BEGIN
 		p_storage_type_id, p_acs_datatype, p_widget, p_sql_datatype, p_parameters
 	);
 	return v_widget_id;
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
 
 
 
@@ -555,7 +552,7 @@ create or replace function im_dynfield_attribute__new (
 	integer, varchar, timestamptz, integer, varchar, integer,
 	varchar, varchar, integer, integer, varchar, 
 	varchar, varchar, varchar, varchar, char, char
-) returns integer as $body$
+) returns integer as '
 DECLARE
 	p_attribute_id		alias for $1;
 	p_object_type		alias for $2;
@@ -603,8 +600,8 @@ BEGIN
 		p_min_n_values,
 		p_max_n_values,
 		null,			-- sort order
-		'type_specific',	-- storage
-		'f'			-- static_p
+		''type_specific'',	-- storage
+		''f''			-- static_p
 	);
 
 	v_attribute_id := acs_object__new (
@@ -628,7 +625,7 @@ BEGIN
 	insert into im_dynfield_type_attribute_map (attribute_id, object_type_id, display_mode)
 	select	ida.attribute_id,
 		c.category_id,
-		'edit'
+		''edit''
 	from	im_dynfield_attributes ida,
 		acs_attributes aa,
 		acs_object_types aot,
@@ -640,7 +637,10 @@ BEGIN
 		aa.attribute_name = p_attribute_name;
 
 	return v_attribute_id;
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
+
+
+
 
 
 
@@ -648,7 +648,7 @@ create or replace function im_dynfield_attribute__new (
 	integer, varchar, timestamptz, integer, varchar, integer,
 	varchar, varchar, integer, integer, varchar, 
 	varchar, varchar, varchar, varchar, char, char, char
-) returns integer as $body$
+) returns integer as '
 DECLARE
 	p_attribute_id		alias for $1;
 	p_object_type		alias for $2;
@@ -695,8 +695,8 @@ BEGIN
 		p_min_n_values,
 		p_max_n_values,
 		null,			-- sort order
-		'type_specific',	-- storage
-		'f'			-- static_p
+		''type_specific'',	-- storage
+		''f''			-- static_p
 	);
 
 	v_attribute_id := acs_object__new (
@@ -720,7 +720,7 @@ BEGIN
 	insert into im_dynfield_type_attribute_map (attribute_id, object_type_id, display_mode)
 	select	ida.attribute_id,
 		c.category_id,
-		'edit'
+		''edit''
 	from	im_dynfield_attributes ida,
 		acs_attributes aa,
 		acs_object_types aot,
@@ -732,7 +732,10 @@ BEGIN
 		aa.attribute_name = p_attribute_name;
 
 	return v_attribute_id;
-end;$body$ language 'plpgsql';
+end;' language 'plpgsql';
+
+
+
 
 
 
@@ -741,33 +744,18 @@ end;$body$ language 'plpgsql';
 
 
 -- Create a fake object type, because im_categories does not "reference" acs_objects.
-create or replace function inline_0 ()
-returns integer as $body$
-declare
-	v_count	 integer;
-begin
-	select count(*) into v_count from acs_object_types
-	where object_type = 'im_category';
-	if v_count > 0 then return 0; end if;
-
-	select acs_object_type__create_type (
-		'im_category',		-- object_type
-		'PO Category',		-- pretty_name
-		'PO Categories',	-- pretty_plural
-		'acs_object',		-- supertype
-		'im_categories',	-- table_name
-		'category_id',		-- id_column
-		'intranet-core',	-- package_name
-		'f',			-- abstract_p
-		null,			-- type_extension_table
-		'im_category_from_id'	-- name_method
-	);
-
-	return 0;
-end;$body$ language 'plpgsql';
-select inline_0 ();
-drop function inline_0 ();
-
+select acs_object_type__create_type (
+	'im_category',		-- object_type
+	'PO Category',		-- pretty_name
+	'PO Categories',	-- pretty_plural
+	'acs_object',		-- supertype
+	'im_categories',	-- table_name
+	'category_id',		-- id_column
+	'intranet-core',	-- package_name
+	'f',			-- abstract_p
+	null,			-- type_extension_table
+	'im_category_from_id'	-- name_method
+);
 
 
 

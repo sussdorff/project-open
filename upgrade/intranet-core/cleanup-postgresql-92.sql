@@ -1346,3 +1346,120 @@ BEGIN
 END;
 
 $$ LANGUAGE plpgsql;
+
+delete from acs_permissions where grantee_id in (select object_id from acs_objects where object_id not in (select party_id from parties));
+
+-- fix later upgrade of acs-kernel 
+drop function acs_permission__permission_p(integer,integer,varchar);
+        CREATE OR REPLACE FUNCTION acs_permission__permission_p(
+           permission_p__object_id integer,
+           permission_p__party_id integer,
+           permission_p__privilege varchar
+        ) RETURNS boolean AS $$
+        DECLARE
+            exists_p                          boolean;
+        BEGIN
+            return exists (With RECURSIVE object_context(object_id, context_id) AS (
+
+                    select permission_p__object_id, permission_p__object_id
+                    from acs_objects
+                    where object_id = permission_p__object_id
+
+                    union all
+
+                    select ao.object_id,
+                    case when (ao.security_inherit_p = 'f' or ao.context_id is null)
+                    then acs__magic_object_id('security_context_root') else ao.context_id end
+                    from object_context oc, acs_objects ao
+                    where ao.object_id = oc.context_id
+                    and ao.object_id != acs__magic_object_id('security_context_root')
+
+                ), privilege_ancestors(privilege, child_privilege) AS (
+
+                    select permission_p__privilege, permission_p__privilege
+
+                    union all
+
+                    select aph.privilege, aph.child_privilege
+                    from privilege_ancestors pa join acs_privilege_hierarchy aph
+                    on aph.child_privilege = pa.privilege
+
+                ) select
+                  1
+                  from
+                  acs_permissions p
+                  join  party_approved_member_map pap on pap.party_id   =  p.grantee_id
+                  join  privilege_ancestors pa  on  pa.privilege  =  p.privilege
+                  join  object_context oc on  p.object_id =  oc.context_id
+                  where pap.member_id = permission_p__party_id
+                );
+        END;
+        $$ LANGUAGE plpgsql stable;
+
+drop function acs_permission__permission_p_recursive_array(integer[],integer,varchar);
+CREATE OR REPLACE FUNCTION  acs_permission__permission_p_recursive_array(
+            permission_p__objects integer[],
+            permission_p__party_id integer,
+            permission_p__privilege varchar
+        ) RETURNS table (object_id integer, orig_object_id integer) as $$
+        BEGIN
+            return query With RECURSIVE object_context(obj_id, context_id, orig_obj_id) AS (
+
+                    select unnest(permission_p__objects), unnest(permission_p__objects), unnest(permission_p__objects)
+
+                    union all
+
+                    select ao.object_id,
+                    case when (ao.security_inherit_p = 'f' or ao.context_id is null)
+                    then acs__magic_object_id('security_context_root') else ao.context_id END,
+                    oc.orig_obj_id
+                    from object_context oc, acs_objects ao
+                    where ao.object_id = oc.context_id
+                    and ao.object_id != acs__magic_object_id('security_context_root')
+
+                ), privilege_ancestors(privilege, child_privilege) AS (
+
+                   select permission_p__privilege, permission_p__privilege
+
+                   union all
+
+                   select aph.privilege, aph.child_privilege
+                   from privilege_ancestors pa join acs_privilege_hierarchy aph
+                   on aph.child_privilege = pa.privilege
+
+                ) select
+                  p.object_id, oc.orig_obj_id
+                  from
+                  acs_permissions p
+                  join  party_approved_member_map pap on pap.party_id   =  p.grantee_id
+                  join  privilege_ancestors pa  on  pa.privilege  =  p.privilege
+                  join  object_context oc on  p.object_id =  oc.context_id
+                  where pap.member_id = permission_p__party_id
+              ;
+        END;
+        $$ LANGUAGE plpgsql stable;
+
+-- filesotrage fixes
+-- update cr_items set live_revision = NULL where live_revision in (select object_id from acs_objects where object_type = 'file_storage_object');
+-- update cr_items set latest_revision = NULL where latest_revision in (select object_id from acs_objects where object_type = 'file_storage_object');
+-- delete from acs_objects where object_type = 'file_storage_object';
+-- delete from cr_items where content_type = 'file_storage_object';
+-- delete from cr_type_template_map where content_type = 'file_storage_object';
+-- delete from im_rest_object_types where object_type = 'file_storage_object';
+-- delete from acs_object_types where table_name = 'file_storage_objectx';
+
+update acs_object_types set table_name = null where table_name = 'file_storage_objectx';
+update acs_object_types set table_name = null where table_name = 'file_storage_object';
+
+alter table persons rename column title to person_title;
+update acs_attributes set attribute_name = 'person_title' where table_name = 'persons' and attribute_name = 'title';
+
+delete from cr_item_rels where item_id not in (select item_id from cr_items);
+alter table application_groups add constraint application_groups_group_id_fk foreign key (group_id) references groups(group_id) on delete
+ cascade;
+
+-- Set context objects to null
+update acs_objects set context_id = NULL where context_id in (select object_id from acs_objects left join cr_items on acs_objects.object_id = cr_items.item_id where object_type = 'content_item' and cr_items.item_id is null);
+
+-- Delete zombie entries
+delete from acs_objects where object_id in (select object_id from acs_objects left join cr_items on acs_objects.object_id = cr_items.item_id where object_type = 'content_item' and cr_items.item_id is null order by object_id desc);

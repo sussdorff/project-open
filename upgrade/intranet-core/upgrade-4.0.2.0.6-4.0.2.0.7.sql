@@ -4,10 +4,8 @@ SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-4.
 
 
 
-create or replace function notification__new(
-	integer,integer,integer,timestamptz,integer,integer,
-	varchar,text,text,text,timestamptz,integer,varchar,integer
-) returns integer as $body$
+create or replace function notification__new(integer,integer,integer,timestamptz,integer,integer,varchar,text,text,text,timestamptz,integer,varchar,integer)
+returns integer as '
 declare
     p_notification_id               alias for $1;
     p_type_id                       alias for $2;
@@ -28,7 +26,7 @@ declare
 begin
     v_notification_id := acs_object__new(
         p_notification_id,
-        'notification',
+        ''notification'',
         p_creation_date,
         p_creation_user,
         p_creation_ip,
@@ -48,12 +46,13 @@ begin
     (v_notification_id, p_type_id, p_object_id, v_notif_date, p_response_id, p_notif_user, p_notif_subject, substring(p_notif_text for 9999), substring(p_notif_html for 9999), p_file_ids);
 
     return v_notification_id;
-end;$body$ language 'plpgsql';
+end;
+' language 'plpgsql';
 
 
 
 create or replace function notification__new(integer,integer,integer,timestamptz,integer,integer,varchar,text,text,timestamptz,integer,varchar,integer)
-returns integer as $body$
+returns integer as '
 declare
     p_notification_id               alias for $1;
     p_type_id                       alias for $2;
@@ -73,7 +72,7 @@ declare
 begin
     v_notification_id := acs_object__new(
         p_notification_id,
-        'notification',
+        ''notification'',
         p_creation_date,
         p_creation_user,
         p_creation_ip,
@@ -93,4 +92,5 @@ begin
     (v_notification_id, p_type_id, p_object_id, v_notif_date, p_response_id, p_notif_user, p_notif_subject, substring(p_notif_text for 9999), substring(p_notif_html for 9999));
 
     return v_notification_id;
-end;$body$ language 'plpgsql';
+end;
+' language 'plpgsql';

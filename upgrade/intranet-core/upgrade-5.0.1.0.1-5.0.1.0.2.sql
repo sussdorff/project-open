@@ -61,10 +61,3 @@ update acs_object_types set pretty_plural = 'Gantt Task Dependencies' where pret
 update im_menus set name = 'Gantt Task' where name = 'Timesheet Task';
 
 
-update im_categories
-set category_type = 'Intranet Gantt Task Type'
-where category_type = 'Intranet Timesheet Task Type';
-
-update im_categories
-set category_type = 'Intranet Gantt Task Status'
-where category_type = 'Intranet Timesheet Task Status';

@@ -62,7 +62,7 @@ extra_select, extra_where, sort_order, visible_for) values (2630,26,NULL,'Prio',
 -- Localization
 SELECT	im_component_plugin__new (
 	null,				-- plugin_id
-	'im_component_plugin',			-- object_type
+	'acs_object',			-- object_type
 	now(),				-- creation_date
 	null,				-- creation_user
 	null,				-- creation_ip

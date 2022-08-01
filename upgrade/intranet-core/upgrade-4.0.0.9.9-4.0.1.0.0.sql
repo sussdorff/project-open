@@ -12,11 +12,11 @@ where category = 'lightgreen';
 
 
 -- Project Base Data Component
-SELECT im_component_plugin__new (null, 'im_component_plugin', now(), null, null, null, 'Project Base Data', 'intranet-core', 'left', '/intranet/projects/view', null, 10, 'im_project_base_data_component -project_id $project_id -return_url $return_url');
+SELECT im_component_plugin__new (null, 'acs_object', now(), null, null, null, 'Project Base Data', 'intranet-core', 'left', '/intranet/projects/view', null, 10, 'im_project_base_data_component -project_id $project_id -return_url $return_url');
 
 
 -- Project Hierarchy Original Component
-SELECT im_component_plugin__new (null, 'im_component_plugin', now(), null, null, null, 'Project Hierarchy', 'intranet-core', 'right', '/intranet/projects/view', null, 50, 'im_project_hierarchy_component -project_id $project_id -return_url $return_url');
+SELECT im_component_plugin__new (null, 'acs_object', now(), null, null, null, 'Project Hierarchy', 'intranet-core', 'right', '/intranet/projects/view', null, 50, 'im_project_hierarchy_component -project_id $project_id -return_url $return_url');
 
 
 
@@ -29,45 +29,48 @@ SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-3.
 -- User Components
 
 -- User Basic Info Component
-SELECT im_component_plugin__new (null, 'im_component_plugin', now(), null, null, null, 'User Basic Information', 'intranet-core', 'left', '/intranet/users/view', null, 0, 'im_user_basic_info_component $user_id $return_url');
+SELECT im_component_plugin__new (null, 'acs_object', now(), null, null, null, 'User Basic Information', 'intranet-core', 'left', '/intranet/users/view', null, 0, 'im_user_basic_info_component $user_id $return_url');
 
 -- User Contact Infor Component
-SELECT im_component_plugin__new (null, 'im_component_plugin', now(), null, null, null, 'User Contact Information', 'intranet-core', 'left', '/intranet/users/view', null, 0, 'im_user_contact_info_component $user_id $return_url');
+SELECT im_component_plugin__new (null, 'acs_object', now(), null, null, null, 'User Contact Information', 'intranet-core', 'left', '/intranet/users/view', null, 0, 'im_user_contact_info_component $user_id $return_url');
 
 -- User Skin Component
--- SELECT im_component_plugin__new (null, 'im_component_plugin', now(), null, null, null, 'User Skin Information', 'intranet-core', 'left', '/intranet/users/view', null, 0, 'im_user_skin_info_component $user_id $return_url');
+-- SELECT im_component_plugin__new (null, 'acs_object', now(), null, null, null, 'User Skin Information', 'intranet-core', 'left', '/intranet/users/view', null, 0, 'im_user_skin_info_component $user_id $return_url');
 
-SELECT im_component_plugin__new (null, 'im_component_plugin', now(), null, null, null, 'User Skin Information', 'intranet-core', 'left', '/intranet/users/view', null, 0, 'im_skin_select_html $user_id $return_url');
+SELECT im_component_plugin__new (null, 'acs_object', now(), null, null, null, 'User Skin Information', 'intranet-core', 'left', '/intranet/users/view', null, 0, 'im_skin_select_html $user_id $return_url');
 
 -- User Administration Component
-SELECT im_component_plugin__new (null, 'im_component_plugin', now(), null, null, null, 'User Admin Information', 'intranet-core', 'left', '/intranet/users/view', null, 0, 'im_user_admin_info_component $user_id $return_url');
+SELECT im_component_plugin__new (null, 'acs_object', now(), null, null, null, 'User Admin Information', 'intranet-core', 'left', '/intranet/users/view', null, 0, 'im_user_admin_info_component $user_id $return_url');
 
 -- User Localization Component
-SELECT im_component_plugin__new (null, 'im_component_plugin', now(), null, null, null, 'User Localization Information', 'intranet-core', 'left', '/intranet/users/view', null, 0, 'im_user_localization_component $user_id $return_url');
+SELECT im_component_plugin__new (null, 'acs_object', now(), null, null, null, 'User Localization Information', 'intranet-core', 'left', '/intranet/users/view', null, 0, 'im_user_localization_component $user_id $return_url');
 
 -- User Portrait Component
-SELECT im_component_plugin__new (null, 'im_component_plugin', now(), null, null, null, 'User Portrait', 'intranet-core', 'right', '/intranet/users/view', null, 0, 'im_portrait_component $user_id_from_search $return_url $read $write $admin');
+SELECT im_component_plugin__new (null, 'acs_object', now(), null, null, null, 'User Portrait', 'intranet-core', 'right', '/intranet/users/view', null, 0, 'im_portrait_component $user_id_from_search $return_url $read $write $admin');
 
 
 -- Company Components
 
 -- Company Info
-SELECT im_component_plugin__new (null, 'im_component_plugin', now(), null, null, null, 'Company Information', 'intranet-core', 'left', '/intranet/companies/view', null, 0, 'im_company_info_component $company_id $return_url');
+SELECT im_component_plugin__new (null, 'acs_object', now(), null, null, null, 'Company Information', 'intranet-core', 'left', '/intranet/companies/view', null, 0, 'im_company_info_component $company_id $return_url');
 
 -- Company Projects
-SELECT im_component_plugin__new (null, 'im_component_plugin', now(), null, null, null, 'Company Projects', 'intranet-core', 'right', '/intranet/companies/view', null, 0, 'im_company_projects_component $company_id $return_url');
+SELECT im_component_plugin__new (null, 'acs_object', now(), null, null, null, 'Company Projects', 'intranet-core', 'right', '/intranet/companies/view', null, 0, 'im_company_projects_component $company_id $return_url');
 
 
 -- Company Members
-SELECT im_component_plugin__new (null, 'im_component_plugin', now(), null, null, null, 'Company Employees', 'intranet-core', 'right', '/intranet/companies/view', null, 0, 'im_company_employees_component $company_id $return_url');
+SELECT im_component_plugin__new (null, 'acs_object', now(), null, null, null, 'Company Employees', 'intranet-core', 'right', '/intranet/companies/view', null, 0, 'im_company_employees_component $company_id $return_url');
 
 -- Company Contacts
-SELECT im_component_plugin__new (null, 'im_component_plugin', now(), null, null, null, 'Company Contacts', 'intranet-core', 'right', '/intranet/companies/view', null, 0, 'im_company_contacts_component $company_id $return_url');
+SELECT im_component_plugin__new (null, 'acs_object', now(), null, null, null, 'Company Contacts', 'intranet-core', 'right', '/intranet/companies/view', null, 0, 'im_company_contacts_component $company_id $return_url');
 
 
-drop function if exists acs_object__name (integer);
+
+
+
+
 create or replace function acs_object__name (integer)
-returns varchar as $body$
+returns varchar as '
 declare
 	name__object_id		alias for $1;
 	object_name		varchar;
@@ -86,12 +89,12 @@ begin
 		order by 
 			o2.tree_sortkey desc
 	loop
-		if obj_type.name_method != '' and obj_type.name_method is NOT null then
-			-- Execute the first name_method we find (since we're traversing
-			-- up the type hierarchy from the object's exact type) using
+		if obj_type.name_method != '''' and obj_type.name_method is NOT null then
+			-- Execute the first name_method we find (since we''re traversing
+			-- up the type hierarchy from the object''s exact type) using
 			-- Native Dynamic SQL, to ascertain the name of this object.
 			for obj in 
-				execute 'select ' || obj_type.name_method || '(' || name__object_id || ')::varchar as object_name' 
+				execute ''select '' || obj_type.name_method || ''('' || name__object_id || '')::varchar as object_name'' 
 			loop
 				object_name := obj.object_name;
 				exit;
@@ -100,7 +103,7 @@ begin
 		end if;
 	end loop;
 	return object_name;
-end;$body$ language 'plpgsql' stable strict;
+end;' language 'plpgsql' stable strict;
 
 
 
@@ -110,8 +113,7 @@ end;$body$ language 'plpgsql' stable strict;
 -- Special dereferencing function for links                                                                                                      
 -- ------------------------------------------------------------------                                                                            
 
-create or replace function im_link_from_id (integer) 
-returns varchar as $body$
+create or replace function im_link_from_id (integer) returns varchar as '
 DECLARE
         p_object_id     alias for $1;
         v_name          varchar;
@@ -125,7 +127,8 @@ BEGIN
         where ibou.object_type = ao.object_type
         and ao.object_id = p_object_id;
 
-        return '<a href=' || v_url || p_object_id || '>' || v_name || '</a>';
-end;$body$ language 'plpgsql';
+        return ''<a href='' || v_url || p_object_id || ''>'' || v_name || ''</a>'';
+end;' language 'plpgsql';
+
 
 

@@ -217,6 +217,7 @@ SELECT im_dynfield_attribute_new ('im_project', 'percent_completed', '% Done', '
 
 
 SELECT im_dynfield_attribute_new ('im_project', 'on_track_status_id', 'On Track', 'category_project_on_track_status', 'string', 'f', 10, 't');
+SELECT im_dynfield_attribute_new ('im_project', 'project_budget_currency', 'Budget Currency', 'currencies', 'string', 'f', 10, 't');
 
 -- SELECT im_dynfield_attribute_new ('im_project', 'project_budget_hours', 'Budget Hours', 'numeric', 'f', 10, 't');
 -- SELECT im_dynfield_attribute_new ('im_project', 'end_date', 'End', 'date', 'f', 10, 't');
