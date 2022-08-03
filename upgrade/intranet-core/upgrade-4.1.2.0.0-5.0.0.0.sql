@@ -1,5 +1,5 @@
--- upgrade-4.1.0.1.6-5.0.0.0.0.sql
-SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-4.1.0.1.6-5.0.0.0.0.sql','');
+-- upgrade-4.1.2.0.0-5.0.0.0.0.sql
+SELECT acs_log__debug('/packages/intranet-core/sql/postgresql/upgrade/upgrade-4.1.2.0.0-5.0.0.0.0.sql','');
 
 
 -- Drop translation fields if translation is not installed
