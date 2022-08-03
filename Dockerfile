@@ -33,6 +33,3 @@ RUN cp -pr installer-linux/content-repository-content-files /var/www/openacs
 RUN rm -rf installer-linux
 
 WORKDIR /var/www/openacs
-
-ENV PKGS_LIST "webix-portal sencha-portal sencha-assignment sencha-freelance-translation intranet-sencha-tables intranet-trans-invoices intranet-translation intranet-trans-trados intranet-trans-memoq"
-ENV PKGS_OLD_LIST "intranet-trans-project-wizard intranet-trans-termbase intranet-freelance intranet-freelance-translation intranet-freelance-invoices"
