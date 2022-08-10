@@ -1,7 +1,6 @@
 FROM sussdorff/openacs:5.10
 
-RUN  apt-get update && apt-get -y dist-upgrade && apt-get install perl -y && apt-get -y autoremove \
-    && mkdir /var/www/openacs/filestorage && mkdir /var/www/gitlab
+RUN mkdir /var/www/openacs/filestorage && mkdir /var/www/gitlab
 
 COPY gitlab/ /var/www/gitlab
 
