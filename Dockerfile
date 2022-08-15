@@ -11,7 +11,7 @@ ENV PKGS_LIST "cognovis-core cognovis-rest  intranet-chilkat intranet-fs intrane
 ENV OLD_PKGS_LIST "intranet-jquery"
 ENV PO_PKGS_LIST "intranet-cost-center upgrade-5.0-5.3 intranet-ganttproject"
 ENV OPENACS_LIST "acs-events rss-support oacs-dav  file-storage attachments calendar categories general-comments acs-datetime views"
-ENV PROJOP_LIST "acs-mail acs-workflow diagram workflow simple-survey installer-linux intranet-calendar intranet-core intranet-cost intranet-dw-light intranet-milestone intranet-dynfield intranet-expenses intranet-exchange-rate intranet-filestorage intranet-forum\
+ENV PROJOP_LIST "acs-mail acs-workflow diagram workflow simple-survey installer-linux intranet-calendar intranet-core intranet-cost intranet-dw-light intranet-milestone intranet-dynfield intranet-expenses intranet-exchange-rate intranet-filestorage intranet-forum \
 intranet-helpdesk intranet-hr intranet-notes intranet-payments intranet-reporting intranet-reporting-dashboard intranet-reporting-tutorial intranet-invoices intranet-openoffice intranet-material intranet-mail \
 intranet-rest intranet-search-pg intranet-security-update-client intranet-simple-survey intranet-sysconfig intranet-timesheet2 intranet-timesheet2-invoices \
 intranet-timesheet2-tasks intranet-timesheet2-workflow intranet-workflow ref-currency intranet-confdb"
