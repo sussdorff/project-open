@@ -7,7 +7,8 @@ COPY gitlab/ /var/www/gitlab
 WORKDIR /var/www/openacs/packages
 
 # Packages to overwrite
-ENV PKGS_LIST "cognovis-core cognovis-rest  intranet-chilkat intranet-fs intranet-slack intranet-collmex webix-portal"
+ENV PKG51_list "cognovis-rest webix-portal"
+ENV PKGS_LIST "cognovis-core intranet-chilkat intranet-fs intranet-slack intranet-collmex"
 ENV OLD_PKGS_LIST "intranet-jquery"
 ENV PO_PKGS_LIST "intranet-cost-center upgrade-5.0-5.3 intranet-ganttproject"
 ENV OPENACS_LIST "acs-events rss-support oacs-dav  file-storage attachments calendar categories general-comments acs-datetime views"
@@ -17,6 +18,7 @@ intranet-rest intranet-search-pg intranet-security-update-client intranet-simple
 intranet-timesheet2-tasks intranet-timesheet2-workflow intranet-workflow ref-currency intranet-confdb"
 
 RUN for pkg in ${PKGS_LIST} ; do git clone https://gitlab.com/cognovis-5/${pkg}.git ; done \
+    && for pkg in ${PKG51_LIST} ; do git clone -b oacs-5-10 https://gitlab.com/cognovis-5/${pkg}.git ; done \
     && for pkg in ${OLD_PKGS_LIST} ; do git clone https://gitlab.com/cognovis/${pkg}.git ; done \
     && for pkg in ${PO_PKGS_LIST} ; do git clone https://gitlab.com/project-open/${pkg}.git ; done \
     && for pkg in ${OPENACS_LIST} ; do git clone -b openacs-5-10-compat https://github.com/openacs/${pkg}.git ; done \
