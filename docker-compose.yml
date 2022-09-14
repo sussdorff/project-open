@@ -29,8 +29,6 @@ services:
             POSTGRES_PASSWORD_FILE: /run/secrets/psql_password
             POSTGRES_USER_FILE: /run/secrets/psql_user
             POSTGRES_DB: openacs
-        ports: 
-            - 5432:5432
         volumes:
             - data:/var/lib/postgresql/data
             - ./database:/docker-entrypoint-initdb.d
