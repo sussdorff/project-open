@@ -17,12 +17,14 @@ services:
             - psql_password
             - psql_user
             - config_vars
+        restart: always
 
     postgres:
-        image: postgres:9
+        image: postgres:14
         secrets:
             - psql_password
             - psql_user
+        command: postgres -c shared_buffers=512MB -c effective_cache_size=1024MB -c work_mem=16MB
         environment: 
             POSTGRES_PASSWORD_FILE: /run/secrets/psql_password
             POSTGRES_USER_FILE: /run/secrets/psql_user
@@ -32,10 +34,12 @@ services:
         volumes:
             - data:/var/lib/postgresql/data
             - ./database:/docker-entrypoint-initdb.d
-
-    unoserver:
-        image: alphakevin/unoconv-server
-
+        restart: always
+    libreoffice:
+        image: sussdorff/libreoffice
+        volumes:
+            - ./libreoffice-config.yml:/app/config.yml
+        restart: always
 volumes:
     data:
     content:
