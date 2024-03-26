@@ -1,4 +1,4 @@
-FROM sussdorff/openacs:5.10-compat
+FROM sussdorff/openacs:5.10
 
 RUN mkdir /var/www/openacs/filestorage && mkdir /var/www/gitlab
 
