@@ -22,7 +22,8 @@ RUN for pkg in ${PKGS_LIST} ; do git clone https://gitlab.com/cognovis-5/${pkg}.
     && for pkg in ${OLD_PKGS_LIST} ; do git clone https://gitlab.com/cognovis/${pkg}.git ; done \
     && for pkg in ${PO_PKGS_LIST} ; do git clone https://gitlab.com/project-open/${pkg}.git ; done \
     && for pkg in ${OPENACS_LIST} ; do git clone -b openacs-5-10-compat https://github.com/openacs/${pkg}.git ; done \
-    && for pkg in ${PROJOP_LIST} ; do mv /var/www/gitlab/${pkg} /var/www/openacs/packages  ; done \
+    # && for pkg in ${PROJOP_LIST} ; do mv /var/www/gitlab/${pkg} /var/www/openacs/packages  ; done \
+    && for pkg in ${PROJOP_LIST} ; do git clone https://gitlab.project-open.net/project-open/${pkg}.git ; done \
     && cp -pr installer-linux/bin /var/www/openacs && cp -pr installer-linux/content-repository-content-files /var/www/openacs && rm -rf installer-linux && rm -rf /var/www/gitlab
 
 WORKDIR /var/www/openacs
